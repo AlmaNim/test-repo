@@ -1,3 +1,4 @@
+// http api для работы с баннерами
 package api
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// инициализация http сервера и настройка маршрутов для обработки запросов
 func Init() {
 	router := gin.Default()
 	router.GET("/user_banner", getUserBanner)
@@ -18,6 +20,8 @@ func Init() {
 	router.Run("localhost:8080")
 }
 
+// http get запрос для получения баннера пользователя
+// Обязательные параметры запроса: tag_id, feature_id. Необязательный параметр: use_last_revision
 func getUserBanner(c *gin.Context) {
 	tagId, tagOk := c.GetQuery("tag_id")
 	featureId, featureOk := c.GetQuery("feature_id")
@@ -44,6 +48,8 @@ func getUserBanner(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+// HTTP GET запрос для получения информации обо всех баннерах
+// Поддерживает фильтрацию по параметрам tag_id и feature_id, а также пагинацию через limit и offset
 func getBanner(c *gin.Context) {
 	tagId, tagOk := c.GetQuery("tag_id")
 	featureId, featureOk := c.GetQuery("feature_id")
@@ -92,6 +98,9 @@ func getBanner(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+// HTTP POST запрос для создания нового баннера
+// Тело запроса должно содержать JSON с данными о баннере
+// TODO:эта функция не дописана до конца, будут внесены изменения
 func postBanner(c *gin.Context) {
 	body := PostBannerRequest{}
 	err := c.BindJSON(&body)
@@ -103,11 +112,13 @@ func postBanner(c *gin.Context) {
 
 }
 
+// TODO:тут по сути заглушка запроса для частичного обновления баннера, будет изменена
 func patchBanner(c *gin.Context) {
 	id := c.Param("id")
 	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(id))
 }
 
+// HTTP DELETE запрос для удаления баннера
 func deleteBanner(c *gin.Context) {
 	id := c.Param("id")
 	idInt, err := strconv.Atoi(id)

@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	api.Init()
-	db.Init()
+	api.Init() //инициализация апишки
+	db.Init()  //инициализация бд
 }
